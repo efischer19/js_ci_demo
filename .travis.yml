@@ -1,7 +1,7 @@
 branches:
   only:
-    - master
-    - /\d+\.\d+\.d+$/
+  - master
+  - "/\\d+\\.\\d+\\.d+$/"
 
 notifications:
   email: false
@@ -10,29 +10,47 @@ language: node_js
 node_js: node
 
 before_install:
-  - npm install -g npm@latest
+- npm install -g npm@latest
 install:
-  - npm ci
+- npm ci
 cache:
   directories:
-      - "$HOME/.npm"
+  - "$HOME/.npm"
 
+stages:
+  - primary tests ✅
+  - verify mergeable 👍
+  - name: github tag 🚢
+    if: branch = master
 jobs:
   include:
-    - stage: primary tests ✅
-      script: npm run test
-      env:
-        - NAME=Unit Tests
-    - stage: primary tests ✅
-      script: npm run lint
-      env:
-        - NAME=Linter
-    # this job is no longer needed, but I want to keep the stage around
-    # eventually commitlint will go here
-    - stage: verify mergeable 👍
-      script: git diff --name-only --exit-code package-lock.json
-      env:
-        - NAME=package-lock validation
+  - stage: primary tests ✅
+    script: npm run test
+    env:
+    - NAME=Unit Tests
+  - stage: primary tests ✅
+    script: npm run lint
+    env:
+    - NAME=Linter
+  - stage: verify mergeable 👍
+    script: git diff --name-only --exit-code package-lock.json
+    env:
+    - NAME=package-lock validation
+  - stage: github tag 🚢
+    env:
+    - NAME=semantic-release (github)
+    script: semantic-release
 
 notifications:
-    webhooks: https://www.travisbuddy.com/?insertMode=update
+  webhooks: https://www.travisbuddy.com/?insertMode=update
+
+before_deploy:
+  # TODO: .npmignore, to make sure dist/ isn't ignored
+  - npm run build
+deploy:
+  provider: npm
+  api_key:
+    secure: 
+  skip_cleanup: true
+  on:
+    tags: true
