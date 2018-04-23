@@ -2,8 +2,8 @@
   "name": "js_ci_demo",
   "version": "0.0.0",
   "description": "Testbed for CI testing and deployment methods",
-  "main": "index.js",
   "scripts": {
+    "build": "webpack --config=webpack.config.js --mode=production",
     "lint": "eslint --ext .js --ext .jsx .",
     "test": "jest"
   },
@@ -25,6 +25,9 @@
   "homepage": "https://github.com/efischer19/js_ci_demo#readme",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "jest": "^22.4.3"
+    "jest": "^22.4.3",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15"
   }
 }

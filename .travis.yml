@@ -1,7 +1,7 @@
 branches:
   only:
-    - master
-    - /\d+\.\d+\.d+$/
+  - master
+  - "/\\d+\\.\\d+\\.d+$/"
 
 notifications:
   email: false
@@ -10,29 +10,39 @@ language: node_js
 node_js: node
 
 before_install:
-  - npm install -g npm@latest
+- npm install -g npm@latest
 install:
-  - npm ci
+- npm ci
 cache:
   directories:
-      - "$HOME/.npm"
+  - "$HOME/.npm"
 
 jobs:
   include:
-    - stage: primary tests ✅
-      script: npm run test
-      env:
-        - NAME=Unit Tests
-    - stage: primary tests ✅
-      script: npm run lint
-      env:
-        - NAME=Linter
-    # this job is no longer needed, but I want to keep the stage around
-    # eventually commitlint will go here
-    - stage: verify mergeable 👍
-      script: git diff --name-only --exit-code package-lock.json
-      env:
-        - NAME=package-lock validation
+  - stage: primary tests ✅
+    script: npm run test
+    env:
+    - NAME=Unit Tests
+  - stage: primary tests ✅
+    script: npm run lint
+    env:
+    - NAME=Linter
+  - stage: "verify mergeable \U0001F44D"
+    script: git diff --name-only --exit-code package-lock.json
+    env:
+    - NAME=package-lock validation
 
 notifications:
-    webhooks: https://www.travisbuddy.com/?insertMode=update
+  webhooks: https://www.travisbuddy.com/?insertMode=update
+
+before_deploy:
+  - npm run build
+deploy:
+  provider: releases
+  api_key:
+    secure: qYv1Lr72H5i4VVZFj5khM6+3wR0Qraa1j0hKY6AOL5HVR6VQBfv8K5BrprO1rB9Go5RVQ+0nG+AaTOSRUpLsLKRpClKc9G7Hc+ZcqMuRLPGJOh9b7mdoo6fKpAmhE3v85mqjh1ud1ebeu7UDKekMG1LGleUt3oWNaykiQnvQqj6ce3KcQS0+80pR05viLrSbm88cNHw0eoP4pALFZ9Fa/Zy4WluOTcGaSDeLbfhalQqVCoWJXZdWKET3eoRmDffV2ox20sXHl2N7gOwdI93NXOYXLTuA4SZYMgBTgyjMAg32ZitpRVufb2ITMs5B/nxdyQ6iUcffeb81fHJjCSHg7t6B5LbKG3CgCah0RrBTt04/CWPHM08orfZzg598b6FszYxyx7wY1syA1+YQSkwTkLQBepeyAh4rO5tT7//z5+/eyLtuoNrr8cllOSKkhrm16tsrs39Qh3u/rToBG75yvZtrpMPJo/ySnySBwvy8vz+DIrw/fZswvqEylftCSWPEf2jpgRfrbE3EFRH1GDwp+SlXCTUD+zlXS1B0dENFE9yZLfjACpAqwFGnGfm1q/1Y7eBGpqV5qfui3tA3H2dTL1/XYa5xoudVJUn1fEdtd/eumN9bcS08R+xtbOChwyQW9rfCsPwbWR12sq7MFSXvn1e5NvmjVSHMAmbVdOoZwzU=
+  skip_cleanup: true
+  file_glob: true
+  file: dist/*
+  on:
+    tags: true
