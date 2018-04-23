@@ -26,6 +26,7 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "jest": "^22.4.3",
+    "semantic-release": "^15.1.7",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15"

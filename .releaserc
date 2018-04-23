@@ -1,0 +1,10 @@
+{
+  "branch": master",
+  "tagFormat": "${version}",
+  "verifyConditions": {
+    "path": "@semantic-release/github",
+    "assets": {
+      "path": "dist/*"
+    }
+  }
+}
