@@ -1,0 +1,30 @@
+{
+  "name": "js_ci_demo",
+  "version": "0.0.0",
+  "description": "Testbed for CI testing and deployment methods",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .js --ext .jsx .",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efischer19/js_ci_demo.git"
+  },
+  "keywords": [
+    "npm",
+    "travis",
+    "ci",
+    "open_source"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/efischer19/js_ci_demo/issues"
+  },
+  "homepage": "https://github.com/efischer19/js_ci_demo#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "jest": "^22.4.3"
+  }
+}

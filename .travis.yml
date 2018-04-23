@@ -1,0 +1,30 @@
+language: node_js
+node_js: node
+
+before_install:
+  - npm install -g npm@latest
+install:
+  - npm ci
+cache:
+  directories:
+      - "$HOME/.npm"
+
+jobs:
+  include:
+    - stage: primary tests ✅
+      script: npm run test
+      env:
+        - NAME=Unit Tests
+    - stage: primary tests ✅
+      script: npm run lint
+      env:
+        - NAME=Linter
+    # this job is no longer needed, but I want to keep the stage around
+    # eventually commitlint will go here
+    - stage: verify mergeable 👍
+      script: git diff --name-only --exit-code package-lock.json
+      env:
+        - NAME=package-lock validation
+
+notifications:
+    webhooks: https://www.travisbuddy.com/?insertMode=update
